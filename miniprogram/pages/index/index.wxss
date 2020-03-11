@@ -1,0 +1,84 @@
+/**index.wxss**/
+/**头部  */
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+
+
+.banner{border: 0px solid red;width: 100%;height: 200px}
+.banner swiper-item{padding: 0 5px; box-sizing: border-box}
+.banner image{width: 100%;height: 200px}
+
+
+input{border: 1px solid #ccc}
+
+/**头部 end */
+
+
+
+
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.mian{margin-top: 20rpx;}
+
+.item{width: 100px; height: 160px;background:red }
+.itemHover{background: lawngreen}
+.mypic{width: 100%;height: 300px}
+
+
+.out{width: 200rpx; height: 200rpx;float: left; margin: 0 10px;  }
+.out image{width: 100%;border-radius: 30rpx;}
+.txt{text-align: center}
+
+.section{
+   display: flex;
+   flex-direction: row;
+   align-items:center;
+   background:#fff;
+   border-radius:45rpx;
+   width: 90%;
+   margin-left: 30rpx;
+   margin-top: 30rpx;
+   font-size: 30rpx;
+}
+.section__title{
+  padding-left: 20rpx;
+  width: 33%;
+}
+.section__title1{
+  padding-left: 20rpx;
+  width: 20%;
+}
+
+.money_total{
+  margin-top: 30rpx;
+  align-items:center;
+  border-radius:45rpx;
+  color: red;
+  text-align: center;
+  background:#fff;
+  margin-left: 200rpx;
+  width: 40%;
+}

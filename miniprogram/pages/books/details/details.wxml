@@ -1,0 +1,32 @@
+<form bindsubmit="formSubmit" bindreset="formReset">
+<view class="section" >
+  <view class="section__title">日期 :</view>
+<input type="text" class="input" disabled value="{{date}}" name="date" />
+</view>
+  <view class="section">
+    <view class="section__title">类型 : </view>
+    <input type="digit" class="input" disabled value="{{type}}" name="type"    confirm-type="done" />
+  </view>
+    <view class="section">
+    <view class="section__title">金额 : </view>
+    <input type="digit" class="input" disabled value="{{money}}" name="money"    confirm-type="done" />
+  </view>
+  <view class="section">
+   <view class="section__title">商品 </view>
+   <textarea class="input"  name="goods" disabled value="{{goods}}"  placeholder="请输入商品">
+ 
+   </textarea>
+
+  </view>
+
+      <view class="section" >
+     <view   wx:for="{{images_list}}" >
+       <image bindtap="imgYu" class="image" data-index="{{index}}"  src="{{item}}"></image>
+       <view class="delete-btn"  ></view> 
+      </view>
+
+    </view> 
+  <view class="btn-area"> 
+    <button class="submit_button" bindtap="backList" formType="submit">返回</button>
+  </view>
+</form>

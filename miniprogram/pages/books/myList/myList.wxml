@@ -1,0 +1,36 @@
+
+<view class="head">
+  <view class="head_item">商品</view>
+  <view class="ring"></view>
+  <view class="head_item2">类型</view>
+   <view class="ring"></view>
+     <view class="head_item2">金额</view>
+
+</view>
+<block wx:for="{{list}}" wx:key="*this">
+  <view class="item" bindtap="toDetails"  id="{{item._id}}">
+    <view class="intro">
+      <view class="position productNameText">
+          {{item.goods}}
+      </view>
+      <view class="address">
+       {{item.date}}
+      </view>
+    </view>
+
+    <view class="booksType">
+       {{item.type}}
+      </view>
+      <view class="booksType" data-book="{{item}}" wx:if="{{date_date ==  item.date}}" bindlongpress="update">
+      {{item.money}}
+      </view>
+      <view class="booksType" data-book="{{item}}" wx:else bindlongpress="update">
+      {{item.money}}
+      </view>
+  </view>
+  <view class="hr"></view>
+</block>
+
+<view class="page__hd" style="position:fixed; bottom:0;width: 750rpx;">
+    <view class="my_total">总金额 : {{total}}</view>
+</view>

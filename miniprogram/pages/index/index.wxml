@@ -1,0 +1,42 @@
+
+<swiper class="banner" indicator-dots indicator-color="rgba(255, 255, 255, 0.6)" indicator-active-color="#fff" autoplay current="1" circular previous-margin="15px" next-margin="15px" wx:if="{{headImagesStatus == 0}}" >
+   <swiper-item wx:for="{{headImages}}" wx:key="*this">
+       <image  src="{{item.url}}"></image>
+   </swiper-item>
+</swiper>
+
+
+<view class="mian">
+<view class="out">
+   <image src="{{add_books_image}}" style="height:100px" bindtap="addBooks" mode="widthFix"></image>
+   <view class="txt">添加帐单</view>
+</view>
+<view class="out">
+   <image src="{{total_books_image}}" bindtap="booksList"  mode="widthFix"></image>
+   <view class="txt">全部账单</view>
+</view>
+<view class="out">
+   <image src="{{my_books_image}}" mode="widthFix" bindtap="myList"></image>
+   <view class="txt">我的账单</view>
+</view>
+</view>
+
+<view class="mian" style="margin-top:35px">
+   <view class="section" wx:for="{{user_list}}">
+       <view class="section__title1"> {{item.username}}</view>
+       <view class="section__title" >支出 : {{item.money}}</view>
+       <view class="section__title" style=" color: red;" wx:if="{{item.money_total <= 0}}">收入 : {{item.money_total}}</view>
+       <view class="section__title" wx:else>收入 : {{item.money_total}}</view>
+
+   </view>
+    <view  class="money_total">总支出 ：{{money_total}}</view>
+</view>
+<!-- <view class="out">
+   <image src="{{add_books_image}}" style="height:100px" bindtap="reports" mode="widthFix"></image>
+   <view class="txt">账单报表</view>
+</view> -->
+<!-- <view class="out">
+   <image src="{{add_books_image}}" style="height:100px" bindtap="add_images" mode="widthFix"></image>
+   <view class="txt">添加图片</view>
+</view> -->
+

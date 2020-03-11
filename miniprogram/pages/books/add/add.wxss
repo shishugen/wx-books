@@ -1,0 +1,42 @@
+.section{
+  display: flex;
+  flex-direction: row;
+  margin: 20rpx;
+  border-bottom:  1px solid #e4e4e4;
+}
+.section1{
+  display: flex;
+  flex-direction: row;
+  margin: 20rpx;
+}
+.section view{
+  margin-right: 20rpx;
+  height: 80rpx;
+  font-size: 40rpx;
+}
+.btn-area{
+  margin: 20rpx;
+  margin-top: 320rpx
+}
+.btn-area-a{
+ margin: 20rpx;
+}
+button{
+  margin: 10rpx 0;
+}
+.reset_button{
+  background-color: red;
+  margin-top: 20rpx;
+  
+} 
+.submit_button{
+  background-color: royalblue
+}
+.input{
+  font-size: 40rpx;
+}
+
+.image{
+  height:360rpx;  
+  width: 360rpx;
+}

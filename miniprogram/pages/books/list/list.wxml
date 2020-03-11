@@ -1,0 +1,63 @@
+
+
+<view class="find_list">
+<view class="section">
+  <view class="section_create_title">用户 : </view>
+  <picker bindchange="bindPickerChange" name="create" id="{{create_by[create_index]._openid}}" value="{{create_by[create_index].create_index}}" data-datetest="{{create_by[create_index]._openid}}"   range="{{create_by}}" range-key="{{'name'}}">
+    <view class="picker">
+        {{create_by[create_index].name}} 
+    </view>
+  </picker>
+</view>
+
+<view class="section" >
+  <view class="section_date_title">日期 :</view>
+  <picker class="picker" name="date" end="{{endDate}}" mode="date" fields="month" value="{{date}}"      bindchange="bindDateChange" >
+    <view class="picker">
+       {{date}}
+    </view>
+  </picker>
+</view>
+</view>
+
+
+
+<view class="head">
+  <view class="head_item">商品</view>
+
+  <view class="head_item">类型</view>
+   <view class="ring"></view>
+  <view class="head_item">创建者</view>
+
+    <view class="head_item">金额</view>
+</view>
+
+
+
+<block wx:for="{{list}}">
+  <view class="item" bindtap="toDetails" id="{{item._id}}">
+    <view class="intro">
+      <!-- 广东礼仪带队宵夜 -->
+      <view class="position productNameText">
+        {{item.goods}}
+      </view>
+      <view class="address">
+       {{item.date}}
+      </view>
+    </view>
+    <view class="booksType">
+       {{item.type}}
+      </view>
+
+     <view class="createBy">
+       {{item.create_by}}
+      </view>
+     <view class="booksType">
+       {{item.money}}
+      </view>
+  </view>
+  <view class="hr"></view>
+</block>
+<view class="page__hd" style="position:fixed; bottom:0;width: 750rpx;">
+    <view class="my_total">总金额 : {{total}}</view>
+</view>

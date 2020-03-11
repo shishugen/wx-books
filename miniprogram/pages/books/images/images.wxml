@@ -1,0 +1,13 @@
+<!--miniprogram/pages/books/images/images.wxml-->
+<button bindtap='load'>下载</button>//用来触发下载函数的按钮
+<view><image src='{{img_l}}' bindtap='load'></image></view>
+
+<loading hidden="{{  loadingHidden }}">
+
+加载中...
+
+</loading>
+
+<button bindtap="addImg" class="addPng" type="default">添加图片</button>
+<image mode="widthFix" style="w" src="cloud://books-zo8ih.626f-books-zo8ih-1301465585/images/1583720068432-766"></image>
+

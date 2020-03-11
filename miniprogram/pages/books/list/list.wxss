@@ -1,0 +1,153 @@
+.item {
+  display: flex;
+  flex-direction: row;
+}
+.head_item {
+  width: 374rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #fff;
+}
+ 
+.head {
+  height:80rpx;
+  background-color: #D53E37;
+  border-top: 1rpx solid #fff;
+  border-bottom: 1rpx solid rgba(204, 204, 204, 1);
+  display: flex;
+  align-items: center;
+  top: 0;
+}
+ 
+.ring {
+  width: 2rpx;
+  height: 100%;
+  background-color: rgba(204, 204, 204, 1);
+}
+ 
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+ 
+.introing {
+  display: flex;
+  flex-direction: column;
+  flex: right;
+  margin-right: 30rpx;
+}
+ 
+.position {
+  margin-top: 20rpx;
+  width: 180rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  text-align: center;
+}
+ 
+.jiaqian {
+  font-size: 28rpx;
+  color: red;
+  margin-top: 20rpx;
+}
+ 
+.address {
+  font-size: 25rpx;
+  color: #999;
+  margin-top: 20rpx;
+}
+ 
+.dizhi {
+  font-size: 25rpx;
+  margin-top: 20rpx;
+}
+ 
+.but {
+  position: absolute;
+  font-size: 25rpx;
+  margin-left: 620rpx;
+  margin-top: 55rpx;
+  border: red;
+  color: red;
+}
+ 
+.rendu {
+  position: absolute;
+  font-size: 25rpx;
+  margin-left: 620rpx;
+  margin-top: 120rpx;
+}
+ 
+.line {
+  align-content: center;
+  border: 1px solid #ccc;
+  opacity: 0.2;
+}
+ 
+.hr {
+  height: 10px;
+  background-color: #eee;
+}
+
+.booksType{
+  margin-top: 34rpx;
+  font-weight: bold;
+  width: 180rpx;
+  text-align: center;
+}
+
+.createBy{
+  margin-top: 34rpx;
+  font-weight: bold;
+  width: 180rpx;
+  text-align: center;
+}
+
+.find_list{
+  display: flex;
+  flex-direction: row;
+}
+.section{
+  display: flex;
+  flex-direction: row;
+  margin: 20rpx;
+  border-bottom:  1px solid #e4e4e4;
+  width: 50%;
+}
+.create_by_select{
+  flex-direction: row
+}
+.picker_select{
+  width: 300rpx
+}
+
+.section_create_title{
+  width: 150rpx
+}
+.section_date_title{
+  width: 120rpx
+}
+
+
+
+.my_total{
+  font-size: 20px;
+  font-weight: bold;
+   text-align: center;
+  color:lawngreen;
+}
+
+
+.productNameText {
+ color: rgb(32, 27, 27);
+ font-size: 35rpx;
+ text-overflow:ellipsis;
+ z-index: -1;
+ display: -webkit-box;
+ word-break: break-all;
+ -webkit-box-orient: vertical;
+ -webkit-line-clamp: 1;
+ overflow: hidden;
+}

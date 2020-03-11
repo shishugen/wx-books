@@ -1,0 +1,54 @@
+<view class="container">
+	<view class="title">
+		{{chartTitle}}
+	</view>
+  
+<loading hidden="{{  loadingHidden }}">
+加载中...
+</loading>
+    <button class="back-btn-data-rep" size="mini" type="primary" bindtap="exportDetails">导出数据</button>
+    <canvas canvas-id="columnCanvas" class="canvas" style="width:750rpx" bindtouchstart="touchHandler"></canvas>
+   		<view wx:if="{{!isMainChartDisplay}}" class="back-btn" bindtap="backToMainChart">返回</view>
+</view>
+<view class="find_list">
+<view class="section">
+  <view class="section_create_title">年 : </view>
+  <picker bindchange="bindPickerChange" name="create" id="{{date_list[date_index]._id}}" value="{{date_list[date_index]._id}}" data-datetest="{{date_list[date_index]._id}}"   range="{{date_list}}" range-key="{{'_id'}}">
+    <view class="picker">
+           {{date_list[date_index]._id}} 
+    </view>
+  </picker>
+</view>
+
+<view class="section">
+  <view class="section_create_title">月 : </view>
+  <picker bindchange="monthBindPickerChange" name="create" id="{{month_arr[month_arr_index].name}}" value="{{month_arr[month_arr_index].name}}"    range="{{month_arr}}" range-key="{{'name'}}">
+    <view class="picker">
+           {{month_arr[month_arr_index].name}} 
+    </view>
+  </picker>
+</view>
+</view>
+
+<view class="head">
+
+  <view class="head_item">用户名 </view>
+   <view class="ring"></view>
+  <view class="head_item">金额</view>
+</view>
+
+<block wx:for="{{my_total_money}}">
+  <view class="item" bindtap="toDetails" id="{{item._id}}">
+    
+
+    <view class="booksType">
+       {{item._id}}
+      </view>
+
+     <view class="createBy">
+       {{item.money}}
+      </view>
+  </view>
+  <view class="hr"></view>
+</block>
+

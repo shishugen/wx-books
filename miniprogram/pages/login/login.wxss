@@ -1,0 +1,14 @@
+/* pages/login/login.wxss */
+.username{
+  text-align: center
+}
+.main{
+  margin-top: 300rpx;
+  font-size: 43rpx;
+}
+.image{
+  height: 240rpx;
+  width:240rpx;
+  margin-left: 35%;
+  border-radius: 35rpx;
+}

@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/books/myList/myList",
+    "pages/books/add/add",
+    "pages/index/index",
+    "pages/books/list/list",
+    "pages/books/reports/reports",
+    "pages/books/images/images",
+    "pages/register/register",
+    "pages/books/details/details"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "账单管理",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/images/icon/main.png",
+        "selectedIconPath": "/images/icon/main1.png"
+      },
+      {
+        "pagePath": "pages/books/reports/reports",
+        "text": "账单报表",
+        "iconPath": "/images/icon/reports.png",
+        "selectedIconPath": "/images/icon/reports1.png"
+      },
+      {
+        "pagePath": "pages/books/myList/myList",
+        "text": "我的账单",
+        "iconPath": "/images/icon/details.png",
+        "selectedIconPath": "/images/icon/details1.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

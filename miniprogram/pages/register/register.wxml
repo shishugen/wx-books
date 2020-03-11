@@ -1,0 +1,14 @@
+<form bindsubmit="formSubmit" bindreset="formReset">
+
+  <view class="section">
+    <view class="section__title">口令 : </view>
+    <input type="text" class="input"  name="pwd" confirm-type="done" placeholder="口令"/>
+  </view>
+    <view class="section">
+    <view class="section__title">姓名 : </view>
+    <input type="text" class="input"  name="userName" maxlength="4"  confirm-type="done" placeholder="姓名"/>
+  </view>
+  <view class="btn-area"> 
+    <button class="submit_button" formType="submit">提交</button>
+  </view>
+</form>

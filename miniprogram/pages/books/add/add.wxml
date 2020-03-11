@@ -1,0 +1,70 @@
+<form bindsubmit="formSubmit" bindreset="formReset">
+<view class="section" >
+  <view class="section__title">日期 :</view>
+  <picker class="picker" name="date" disabled='{{isUpdate}}' start="{{start_date}}" end="{{end_date}}" mode="date" value="{{date}}" bindchange="bindDateChange" >
+    <view class="picker">
+       {{date}}
+    </view>
+  </picker>
+</view>
+
+<view class="section">
+  <view class="section__title">类型 : </view>
+  <picker bindchange="bindPickerChange" name="type" value="{{booksType[type_index].name}}" data-selecthx="{{booksType[type_index].name}}" range="{{booksType}}" range-key="{{'name'}}">
+    <view class="picker">
+        {{booksType[type_index].name}} 
+    </view>
+  </picker>
+</view>
+
+  <view class="section">
+    <view class="section__title">金额 : </view>
+    <input type="digit" class="input" maxlength="8" value="{{money}}" name="money" confirm-type="done" placeholder="金额"/>
+  </view>
+  <view class="section">
+   <view class="section__title">商品 </view>
+   <textarea class="input"  name="goods"value="{{goods}}"  placeholder="请输入商品">
+   </textarea>
+  </view>
+
+  <!--图片描述-->
+ <!-- <view wx:if="{{item.pictures}}" class="list-dImg">
+    <image bindtap="imgYu" data-list="{{item.pictures}}" data-src="{{dImg}}" wx:for="{{item.pictures}}" wx:for-item="dImg" src="{{dImg}}"></image>
+ </view> -->
+ 
+
+    
+        <view class="page__bd section1" >
+        <view> 
+           <button bindtap="addImg"  class="addPng" type="default">添加图片</button> 
+        </view>
+         
+        <view class="section1 section_gap">
+            <radio-group class="radio-group" bindchange="radioChange">
+                <radio class="radio" wx:for-items="{{items}}" wx:key="name" value="{{item.name}}"   checked="{{item.checked}}">
+                    <text>{{item.value}}</text>
+                </radio>
+            </radio-group>
+        </view>
+    </view>
+
+    <view class="section" >
+     <view   wx:for="{{images_list}}" wx:key="*this">
+       <image bindtap="imgYu" bindlongpress="deleteImage" class="image" data-index="{{index}}"  src="{{item}}"></image>
+       <view class="delete-btn"  ></view> 
+      </view>
+
+    </view> 
+
+
+  
+
+
+  <view class="btn-area" > 
+    <button class="submit_button"  formType="submit">提交</button>
+ 
+    <button class="reset_button" formType="reset">重置</button>
+  </view>
+
+  
+</form>
