@@ -1,3 +1,4 @@
+.page{background-color:var(--weui-BG-2)}
 .section{
   display: flex;
   flex-direction: row;
@@ -16,7 +17,6 @@
 }
 .btn-area{
   margin: 20rpx;
-  margin-top: 320rpx
 }
 .btn-area-a{
  margin: 20rpx;

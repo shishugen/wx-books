@@ -60,12 +60,12 @@ Page({
       }, {
         text: '修改',
         extClass: 'test',
-        src: '/page/weui/cell/icon_star.svg', // icon的路径
+          src: '../icon_del.svg', // icon的路径
       }, {
         type: 'warn',
         text: '删除',
-        extClass: 'test',
-        src: '/page/weui/cell/icon_del.svg', // icon的路径
+        extClass: 'test12',
+          src: '../../example/images/icon/del1.svg', // icon的路径
       }],
     });
     
@@ -81,9 +81,24 @@ Page({
     } else if (index == 1) { //修改
       this.update(e)
     } else if (index == 2) { //删除
+      const db = wx.cloud.database();
+      const books_list = db.collection("books_list");
+      books_list.doc(e.currentTarget.dataset.book._id)
+      .remove().then(res=>{
+        wx.showToast({
+          title: '成功',
+          icon: 'success',
+          duration: 2000
+        })
+        this.onLoad();
+      }).catch(err=>{
+        wx.showToast({
+          title: '删除失败',
+          image: "/images/icon/error.png"
+        })
+      })
 
     }
-
 
   },
   getDate: function () {

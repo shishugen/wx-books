@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/books/add/add",
     "pages/books/myList/myList",
     "pages/books/test/test",
     "pages/login/login",
-    "pages/books/add/add",
     "pages/index/index",
     "pages/books/list/list",
     "pages/books/reports/reports",

@@ -9,7 +9,7 @@
 
 <block wx:for="{{list}}" wx:key="*this">
   <mp-cells ext-class="my-cells"  title=" {{item.date}}">
-            <mp-slideview buttons="{{slideButtons}}" data-book="{{item}}" bindbuttontap="slideButtonTap">
+            <mp-slideview buttons="{{slideButtons}}" icon="" data-book="{{item}}" bindbuttontap="slideButtonTap">
                 <mp-cell value="{{item.goods}}" footer="{{item.money}}"></mp-cell>
             </mp-slideview>
   </mp-cells>

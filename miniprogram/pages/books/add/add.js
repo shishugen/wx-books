@@ -19,6 +19,8 @@ Page({
     sourceType: ["camera"],
     isUpdate:false,
     update_id : '',
+    goods_length:0,
+    arr_index : 0,
     items: [
       { name: 'camera', value: '相机' ,checked: 'true' },
       { name: 'album', value: '相册', },
@@ -266,7 +268,7 @@ Page({
 
 
   addImg: function (e) {
-    if(arr.length == 2){
+    if(arr.length == 3){
       wx.showToast({
         title: '只可以上传两张图片',
         image: "/images/icon/error.png"
@@ -277,7 +279,7 @@ Page({
     console.log(e)
       wx.chooseImage({//选择图片
  
-      count: 2, //规定选择图片的数量，默认9
+      count: 3, //规定选择图片的数量，默认9
 
       sizeType: ["original", "compressed"], //规定图片的尺寸， 原图/压缩图
 
@@ -321,41 +323,52 @@ Page({
     })
 
   },
-  deleteImage: function (e) {
-    var th = this;
-    var index = e.currentTarget.dataset.index;//获取当前长按图片下标
-      wx.showModal({
-        title: '提示',
-        content: '确定要删除此图片吗？',
-        success: function (res) {
-          if (res.confirm) {
-            console.log(arr)
-            th.deleteCloudFile(arr[index])
-            arr.splice(index, 1);
-            th.setData({
-              images_list: arr
-            })
-            console.log(arr)
-            console.log(th.data.images_list)
-          } else if (res.cancel) {
-            console.log('点击取消了');
-            return false;
-          }
-        }
-      })
+  // deleteImage: function () {
+  //   var th = this;
+  //   const index = th.data.arr_index
+  //     wx.showModal({
+  //       title: '提示',
+  //       content: '确定要删除此图片吗？',
+  //       success: function (res) {
+  //         if (res.confirm) {
+  //           console.log(arr)
+  //           th.deleteCloudFile(arr[index])
+  //           arr.splice(index, 1);
+  //           th.setData({
+  //             images_list: arr
+  //           })
+  //           console.log(arr)
+  //           console.log(th.data.images_list)
+  //         } else if (res.cancel) {
+  //           console.log('点击取消了');
+  //           return false;
+  //         }
+  //       }
+  //     })
     
-  },
+  // },
   // 删除文件
-  deleteCloudFile:function(arr) {
+  deleteCloudFile:function() {
+    var th = this;
+    console.log("ee", this.data.arr_index)
+
+  
+    console.log(arr)
+    
    wx.cloud.deleteFile({
-     fileList: [arr],
+     fileList: [arr[th.data.arr_index]],
     success: (res) => {
       console.log(res)
+      arr.splice(th.data.arr_index, 1);
+      th.setData({
+        images_list: arr
+      })
     },
     fail: (err) => {
       console.log(err)
     }
    })
+ 
   },
   onShow: function (options) {
     // var pages = getCurrentPages();
@@ -379,4 +392,33 @@ Page({
       urls: images_list // 需要预览的图片http链接列表
     })
   }
+  ,
+  bindInputGoods:function(e){
+    this.setData({
+      goods_length: e.detail.cursor
+    })
+   
+  },
+  openIOS1: function (e) {
+    console.log(e)
+    this.setData({
+      iosDialog1: true,
+      arr_index : e.currentTarget.dataset.index
+    });
+  },
+  close:function(e){
+    this.setData({
+      iosDialog1: false
+    });
+   
+  },
+
+  
+  confirm: function() {
+    this.setData({
+      iosDialog1: false
+    });
+    this.deleteCloudFile()
+  }
+
 })
