@@ -1,5 +1,4 @@
 {
-  "navigationBarTitleText": "我的帐单",
   "usingComponents": {
     "mp-cells": "../example/cells/cells",
     "mp-cell": "../example/cell/cell",

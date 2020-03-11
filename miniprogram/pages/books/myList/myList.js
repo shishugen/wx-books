@@ -1,4 +1,5 @@
 // miniprogram/pages/books/list/list.js
+var base64 = require("../../example/images/base64");
 //获取应用实例
 Page({
  
@@ -49,8 +50,40 @@ Page({
       
       }
     })
-
+   
+   //动画
+    this.setData({
+      icon: base64.icon20,
+      slideButtons: [{
+        text: '查看',
+        src: '/page/weui/cell/icon_love.svg', // icon的路径
+      }, {
+        text: '修改',
+        extClass: 'test',
+        src: '/page/weui/cell/icon_star.svg', // icon的路径
+      }, {
+        type: 'warn',
+        text: '删除',
+        extClass: 'test',
+        src: '/page/weui/cell/icon_del.svg', // icon的路径
+      }],
+    });
     
+
+  },
+  slideButtonTap(e) {
+    console.log('slide button tap', e)
+
+    const index = e.detail.index;
+    if (index == 0) { //查看
+      this.toDetails(e)
+
+    } else if (index == 1) { //修改
+      this.update(e)
+    } else if (index == 2) { //删除
+
+    }
+
 
   },
   getDate: function () {
@@ -69,7 +102,7 @@ Page({
   },
   toDetails: function (e) {
     wx.navigateTo({
-      url: "/pages/books/details/details?id=" + e.currentTarget.id
+      url: "/pages/books/details/details?id=" + e.currentTarget.dataset.book._id
     });
 
   },

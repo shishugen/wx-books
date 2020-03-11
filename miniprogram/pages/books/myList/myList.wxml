@@ -1,13 +1,19 @@
 
 <view class="head">
   <view class="head_item">商品</view>
-  <view class="ring"></view>
-  <view class="head_item2">类型</view>
    <view class="ring"></view>
      <view class="head_item2">金额</view>
-
 </view>
+
+
+
 <block wx:for="{{list}}" wx:key="*this">
+  <mp-cells ext-class="my-cells"  title=" {{item.date}}">
+            <mp-slideview buttons="{{slideButtons}}" data-book="{{item}}" bindbuttontap="slideButtonTap">
+                <mp-cell value="{{item.goods}}" footer="{{item.money}}"></mp-cell>
+            </mp-slideview>
+  </mp-cells>
+<!-- 
   <view class="item" bindtap="toDetails"  id="{{item._id}}">
     <view class="intro">
       <view class="position productNameText">
@@ -18,9 +24,11 @@
       </view>
     </view>
 
-    <view class="booksType">
+      <view class="booksType">
        {{item.type}}
-      </view>
+      </view> -->
+     
+<!-- 
       <view class="booksType" data-book="{{item}}" wx:if="{{date_date ==  item.date}}" bindlongpress="update">
       {{item.money}}
       </view>
@@ -28,7 +36,7 @@
       {{item.money}}
       </view>
   </view>
-  <view class="hr"></view>
+  <view class="hr"></view> -->
 </block>
 
 <view class="page__hd" style="position:fixed; bottom:0;width: 750rpx;">
