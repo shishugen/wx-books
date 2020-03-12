@@ -10,7 +10,8 @@ Page({
     list: [],
     total:0,
     is_update:'',
-    date_date : ''
+    date_date : '',
+    page : 10 ,
   },
 
   /**
@@ -31,25 +32,22 @@ Page({
             $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
             $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
           }
-        }).get({
+        }).orderBy("_id","asc").limit(th.data.page).get({
           success: function (res) {
             // res.data 是包含以上定义的两条记录的数组
             th.setData({
               list: res.data
             })
-        
-            for(var i = 0; i < res.data.length; i++){
-              th.data.total += parseFloat(res.data[i].money)
+          //  console.log(th.data.page)
+            if (th.data.page == 10){
+              th.get_money_total(id);
             }
-            th.setData({
-              total: th.data.total.toFixed(2)
-            }) 
-
           }
         })
       
       }
     })
+  
    
    //动画
     this.setData({
@@ -67,10 +65,79 @@ Page({
         extClass: 'test12',
           src: '../../example/images/icon/del1.svg', // icon的路径
       }],
+
+      slideButtons_1: [{
+        text: '查看',
+        src: '/page/weui/cell/icon_love.svg', // icon的路径
+      }],
     });
     
 
+
   },
+
+  //计算总金额
+  get_money_total: function (id) {
+    const th = this;
+    const db = wx.cloud.database();
+    const books_list = db.collection("books_list");
+    books_list.where({
+      _openid: id,
+      date: {								//columnName表示欲模糊查询数据所在列的名
+        $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+        $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
+      }
+    }).get({
+      success: function (res) {
+
+        for (var i = 0; i < res.data.length; i++) {
+          th.data.total += parseFloat(res.data[i].money)
+        }
+        th.setData({
+          total: th.data.total.toFixed(2)
+        })
+      }
+    })
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom : function () {
+    console.log("eee")
+    const p = this.data.page + 8 ; 
+    this.setData({
+      page: p
+    })
+    this.onLoad()
+   
+
+  },
+
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 1000
+    })
+    setTimeout(() => {
+      wx.stopPullDownRefresh()
+    }, 1000);
+
+    this.setData({
+      page: 10
+    })
+    this.onLoad()
+     wx.hideNavigationBarLoading() //完成停止加载
+     wx.stopPullDownRefresh() //停止下拉刷新
+
+  },
+
   slideButtonTap(e) {
     console.log('slide button tap', e)
 
@@ -119,7 +186,6 @@ Page({
     wx.navigateTo({
       url: "/pages/books/details/details?id=" + e.currentTarget.dataset.book._id
     });
-
   },
 
 
@@ -141,19 +207,7 @@ Page({
 
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
 
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
 
   /**
    * 用户点击右上角分享

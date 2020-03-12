@@ -82,12 +82,12 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 18:
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -95,108 +95,71 @@ module.exports =
 
 Component({
     options: {
-        addGlobalClass: true,
-        multipleSlots: true
+        multipleSlots: true,
+        addGlobalClass: true
     },
     properties: {
+        title: {
+            type: String,
+            value: ''
+        },
         extClass: {
             type: String,
             value: ''
         },
-        buttons: {
-            type: Array,
-            value: [],
-            observer: function observer(newVal) {
-                this.addClassNameForButton();
-            }
-        },
-        disable: {
+        maskClosable: {
             type: Boolean,
-            value: false
+            value: true
         },
-        icon: {
+        mask: {
             type: Boolean,
-            value: false
+            value: true
         },
         show: {
             type: Boolean,
-            value: false
+            value: false,
+            observer: '_showChange'
         },
-        duration: {
-            type: Number,
-            value: 350
-        },
-        throttle: {
-            type: Number,
-            value: 40
-        },
-        rebounce: {
-            type: Number,
-            value: 0
+        buttons: {
+            type: Array,
+            value: []
         }
     },
     data: {
-        size: null
+        innerShow: false
     },
     ready: function ready() {
-        this.updateRight();
-        this.addClassNameForButton();
+        var buttons = this.data.buttons;
+        var len = buttons.length;
+        buttons.forEach(function (btn, index) {
+            if (len === 1) {
+                btn.className = 'weui-dialog__btn_primary';
+            } else if (index === 0) {
+                btn.className = 'weui-dialog__btn_default';
+            } else {
+                btn.className = 'weui-dialog__btn_primary';
+            }
+        });
+        this.setData({
+            buttons: buttons
+        });
     },
 
     methods: {
-        updateRight: function updateRight() {
-            var _this = this;
+        buttonTap: function buttonTap(e) {
+            var index = e.currentTarget.dataset.index;
 
+            this.triggerEvent('buttontap', { index: index, item: this.data.buttons[index] }, {});
+        },
+        close: function close() {
             var data = this.data;
-            var query = wx.createSelectorQuery().in(this);
-            query.select('.left').boundingClientRect(function (res) {
-                //console.log('right res', res);
-                var btnQuery = wx.createSelectorQuery().in(_this);
-                btnQuery.selectAll('.btn').boundingClientRect(function (rects) {
-                   // console.log('btn rects', rects);
-                    _this.setData({
-                        size: {
-                            buttons: rects,
-                            button: res,
-                            show: data.show,
-                            disable: data.disable,
-                            throttle: data.throttle,
-                            rebounce: data.rebounce
-                        }
-                    });
-                }).exec();
-            }).exec();
-        },
-        addClassNameForButton: function addClassNameForButton() {
-            var _data = this.data,
-                buttons = _data.buttons,
-                icon = _data.icon;
-
-            buttons.forEach(function (btn) {
-                if (icon) {
-                    btn.className = '';
-                } else if (btn.type === 'warn') {
-                    btn.className = 'weui-slideview__btn-group_warn';
-                } else {
-                    btn.className = 'weui-slideview__btn-group_default';
-                }
-            });
+            if (!data.maskClosable) return;
             this.setData({
-                buttons: buttons
+                show: false
             });
+            this.triggerEvent('close', {}, {});
         },
-        buttonTapByWxs: function buttonTapByWxs(data) {
-            this.triggerEvent('buttontap', data, {});
-        },
-        hide: function hide() {
-            this.triggerEvent('hide', {}, {});
-        },
-        show: function show() {
-            this.triggerEvent('show', {}, {});
-        },
-        transitionEnd: function transitionEnd() {
-            console.log('transitiion end');
-        }
+        stopEvent: function stopEvent() {}
     }
 });
 

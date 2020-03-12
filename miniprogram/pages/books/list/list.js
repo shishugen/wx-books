@@ -12,8 +12,8 @@ Page({
     openid:'',
     endDate:'',
     total:0,
-    create_by_total: { "_openid": "", "name": "全部" }
-
+    create_by_total: { "_openid": "", "name": "全部" },
+    page : 8 ,
 
   }
 ,
@@ -26,15 +26,14 @@ Page({
     this.getDate();
     const db = wx.cloud.database();
     const th = this;
-      
+    console.log(th.data.date)
         const books_list = db.collection("books_list");
         books_list.where({
           date: {								//columnName表示欲模糊查询数据所在列的名
             $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
             $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
           }
-
-        }).get().then(res => {
+        }).limit(th.data.page).get().then(res => {
           this.setData({
             list: res.data
           })
@@ -48,15 +47,13 @@ Page({
         }).catch(ree => {
           console.log("查询错误", ree);
         })
-
+    th.get_total_money()
 
     //查询类型
     const wx_user = db.collection("wx_user");
     wx_user.where({
-    
     }).get().then(res => {
       console.log(res);
-     
       const data = res.data.concat(this.data.create_by_total)
       let temp = data[0];
       data[0] = data[data.length - 1];
@@ -72,7 +69,33 @@ Page({
 
   },
 
-  
+ //获取总金额
+  get_total_money : function(){
+    const db = wx.cloud.database();
+    const th = this;
+    console.log(th.data.date)
+    const books_list = db.collection("books_list");
+    const obj = {}
+    if (th.data.create_by_total[th.data.create_index]._openid != ""){
+      obj._openid = th.data.create_by_total[th.data.create_index]._openid
+    }
+    var query = {}
+    
+    query.$regex = '.*' + th.data.date + '.*'	
+    obj.date = query
+   
+    books_list.match({ obj })
+      .group({
+        money: $.sum("$money").get().then(res => {
+      this.setData({
+        list: res.data
+      })
+      console.log(res)
+
+    })
+    
+  })
+  },
 
   bindPickerChange: function (e) {
     const th = this;
@@ -151,7 +174,7 @@ Page({
             $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
           }
 
-        }).get().then(res => {
+        }).orderBy("_id","asc").limit(60).get().then(res => {
           this.setData({
             list: res.data
           })

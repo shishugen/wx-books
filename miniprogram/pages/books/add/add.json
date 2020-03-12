@@ -1,5 +1,7 @@
 
 {
   "navigationBarTitleText":"新增帐本",
-  "usingComponents": {}
+  "usingComponents": {
+    "mp-dialog": "../example/dialog/dialog"
+  }
 }

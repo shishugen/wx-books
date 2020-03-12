@@ -2,8 +2,6 @@
 .title {
 	text-align: center;
 	position: relative;
-	margin-top: 20rpx;
-	margin-bottom: 20rpx;
 }
 .back-btn {
 	position: absolute;
@@ -11,10 +9,19 @@
 	top: 0;
 }
 .back-btn-data-rep{
-  position: absolute;
-	right: 20rpx;
+  /* //position: absolute; */
+	left: 280rpx;
+	top: 0;
+  margin-top: -40rpx
+}
+
+.back-btn-data-rep1{
+
+	left: 250rpx;
 	top: 0;
 }
+
+
 
 .item {
   display: flex;
@@ -168,4 +175,9 @@
  -webkit-box-orient: vertical;
  -webkit-line-clamp: 1;
  overflow: hidden;
+}
+
+.btn-viwe{
+    display: flex;
+  flex-direction: row;
 }

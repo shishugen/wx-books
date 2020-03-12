@@ -24,7 +24,9 @@ Page({
     items: [
       { name: 'camera', value: '相机' ,checked: 'true' },
       { name: 'album', value: '相册', },
-    ]   
+    ]   ,
+    buttons: [{ text: '取消' }, { text: '确定' }],
+    dialogShow: false,
   },
   formSubmit: function (e) {
      const th = this;
@@ -201,6 +203,7 @@ Page({
         images_list: book.images,
         isUpdate : true,
         update_id: book._id,
+        goods_length: book.goods.length,
       })
       arr = book.images
     }
@@ -351,10 +354,7 @@ Page({
   deleteCloudFile:function() {
     var th = this;
     console.log("ee", this.data.arr_index)
-
-  
-    console.log(arr)
-    
+     console.log(arr)
    wx.cloud.deleteFile({
      fileList: [arr[th.data.arr_index]],
     success: (res) => {
@@ -393,32 +393,26 @@ Page({
     })
   }
   ,
-  bindInputGoods:function(e){
-    this.setData({
-      goods_length: e.detail.cursor
-    })
-   
-  },
-  openIOS1: function (e) {
+
+
+  openConfirm: function (e) {
     console.log(e)
     this.setData({
-      iosDialog1: true,
-      arr_index : e.currentTarget.dataset.index
-    });
-  },
-  close:function(e){
-    this.setData({
-      iosDialog1: false
-    });
-   
-  },
-
+      dialogShow: true,
+      arr_index: e.currentTarget.dataset.index
+    })
   
-  confirm: function() {
+  },
+  tapDialogButton(e) {
+    console.log(e)
+    const index =  e.detail.index;
     this.setData({
-      iosDialog1: false
-    });
-    this.deleteCloudFile()
-  }
-
+      dialogShow: false,
+      showOneButtonDialog: false,
+    })
+    if (index == 1){
+      this.deleteCloudFile()
+    }
+  
+  },
 })

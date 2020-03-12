@@ -1,21 +1,13 @@
 <form bindsubmit="formSubmit" bindreset="formReset" style="background-color: #ffffff">
 <view class="page">
-
-
-    
 <view class="page__bd">
 
-    <view class="fadeIn" wx:if="{{iosDialog1}}">
-        <view class="weui-mask"></view>
-        <view class="weui-dialog">
-            <view class="weui-dialog__hd"><strong class="weui-dialog__title">弹窗标题</strong></view>
-            <view class="weui-dialog__bd">确定要删除此图片吗？</view>
-            <view class="weui-dialog__ft">
-                <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="close">取消</a>
-                <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="confirm">确实</a>
-            </view>
-        </view>
-    </view>
+     <mp-dialog title="提示" show="{{dialogShow}}" bindbuttontap="tapDialogButton"  
+         buttons="{{buttons}}">
+        <view>确定要删除此图片吗？</view>
+    </mp-dialog>
+
+
              <view class="weui-cell weui-cell_active" style="background-color: #ffffff">
                 <view class="weui-cell__hd">
                     <view class="weui-label">日期</view>
@@ -121,7 +113,7 @@
                             <view class="weui-uploader__files" id="uploaderFiles">
                                 <block wx:for="{{images_list}}" wx:key="*this">
                                     <view class="weui-uploader__file" bindtap="imgYu" id="{{item}}">
-                                        <image class="weui-uploader__img" src="{{item}}"  bindlongpress="openIOS1" 
+                                        <image class="weui-uploader__img" src="{{item}}"  bindlongpress="openConfirm" 
                                         data-index="{{index}}" mode="aspectFill" />
                                     </view>
                                 </block>
@@ -137,6 +129,5 @@
 
   <view class="btn-area" > 
     <button class="submit_button"  formType="submit">提交</button>
-    <button class="reset_button" formType="reset">重置</button>
   </view>
   </form>

@@ -78,6 +78,9 @@ Page({
             }
           })
         } else {
+          that.setData({
+            isUser : true
+          })
           console.log("未授权=====")
          // that.showSettingToast("请授权")
         }

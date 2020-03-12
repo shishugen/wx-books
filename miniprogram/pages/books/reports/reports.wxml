@@ -1,14 +1,24 @@
 <view class="container">
 	<view class="title">
-		{{chartTitle}}
+		{{chartTitle}} 
 	</view>
   
 <loading hidden="{{  loadingHidden }}">
 加载中...
 </loading>
-    <button class="back-btn-data-rep" size="mini" type="primary" bindtap="exportDetails">导出数据</button>
+
+     <mp-dialog title="提示" show="{{dialogShow}}" bindbuttontap="tapDialogButton"  
+         buttons="{{buttons}}">
+        <view>请选择全部数据还是个人</view>
+    </mp-dialog>
+      <view class="btn-viwe">
+      <button class="back-btn-data-rep" size="mini" wx:if="{{!isMainChartDisplay}}" type="primary" bindtap="backToMainChart">返回</button>
+      <button class="back-btn-data-rep1" size="mini" wx:if="{{isMainChartDisplay}}"   type="primary" bindtap="openConfirm">导出数据</button>
+      </view>
+
+
     <canvas canvas-id="columnCanvas" class="canvas" style="width:750rpx" bindtouchstart="touchHandler"></canvas>
-   		<view wx:if="{{!isMainChartDisplay}}" class="back-btn" bindtap="backToMainChart">返回</view>
+
 </view>
 <view class="find_list">
 <view class="section">

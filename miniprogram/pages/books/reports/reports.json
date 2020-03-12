@@ -1,4 +1,6 @@
 {
-  "usingComponents": {} ,
+  "usingComponents": {
+    "mp-dialog": "../example/dialog/dialog"
+  },
   "enablePullDownRefresh": true
 }

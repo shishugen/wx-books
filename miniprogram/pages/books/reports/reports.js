@@ -11,7 +11,7 @@ var ye=[];
 
 Page({
   data: {
-    chartTitle: '总消费',
+    chartTitle: '',
     isMainChartDisplay: true,
     chartData: [],
     my_total_money : 0,
@@ -26,6 +26,8 @@ Page({
       { id: 10, name: "十月" }, { id: 11, name: "十一月" }, { id: 12, name: "十二月"}],
 
     month_arr_index : 0,
+    buttons: [{ text: '取消' }, { text: '个人' }, { text: '全部' }],
+    dialogShow: false,
   },
 
   onLoad: function () {
@@ -287,7 +289,7 @@ Page({
           this.setData({
             chartData: {
               main: {
-                title: '总消费',
+                title: '',
                 data: money,
                 categories: arry
               },
@@ -333,9 +335,29 @@ Page({
     })
 
   },
+  openConfirm: function (e) {
+    console.log(e)
+    this.setData({
+      dialogShow: true,
+   
+    })
 
+  },
+  tapDialogButton(e) {
+    console.log(e)
+    const index = e.detail.index;
+    this.setData({
+      dialogShow: false,
+      showOneButtonDialog: false,
+    })
+    if (index == 1) { //个人
+      this.exportDetails(index)
+    }else if(index == 2){
+      this.exportDetails(index)
+    }
+  },
   //导出数据
-  exportDetails:function(e){
+  exportDetails:function(index){
   // date_index date_list_total  month_arr_index month_arr
     const th = this;
     let filterObj = {}
@@ -345,32 +367,13 @@ Page({
         image: "/images/icon/error.png"
       })
       return;
-    }
-    wx.showModal({
-      title: '提示',
-      content: '你确定导出数据吗？',
-      success(res) {
-        if (res.confirm) {
-         
-          wx.showModal({
-            title: '提示',
-            content: '请选择全部数据还是个人?',
-            confirmText:"全部数据",
-            cancelText:"个人数据",
-            showCancel:true,
-            success(res) {
-             // if (res.confirm) {
-              //   console.log('请选择全部')
-
-              // } else if (res.cancel) {
-                
+    } 
              
                 wx.cloud.callFunction({
                   name: 'login',
                   complete: re => {
-                    if (res.cancel){
+                    if (index == 1){
                        filterObj._openid = re.result.openid;
-
                     }
                     const year = th.data.date_list[th.data.date_index]._id
                     const month = th.data.month_arr[th.data.month_arr_index].id
@@ -454,15 +457,8 @@ Page({
 
                    }
                 })
-              //}
-              console.log("ddddsssssss");
-            }
-          })
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
-    })
+              
+
       }
       ,
   arrSort: function (arr1){
