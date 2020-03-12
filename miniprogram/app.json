@@ -1,12 +1,12 @@
 {
   "pages": [
     "pages/books/list/list",
+    "pages/index/index",
+    "pages/login/login",
     "pages/books/myList/myList",
     "pages/books/reports/reports",
-    "pages/login/login",
     "pages/books/add/add",
     "pages/books/test/test",
-    "pages/index/index",
     "pages/books/images/images",
     "pages/register/register",
     "pages/books/details/details"

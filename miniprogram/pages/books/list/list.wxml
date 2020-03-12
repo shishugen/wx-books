@@ -34,10 +34,10 @@
 
 
 
-<block wx:for="{{list}}">
+<block wx:for="{{list}}" wx:key="{{item._id}}">
   <view class="item" bindtap="toDetails" id="{{item._id}}">
     <view class="intro">
-      <!-- 广东礼仪带队宵夜 -->
+    
       <view class="position productNameText">
         {{item.goods}}
       </view>
