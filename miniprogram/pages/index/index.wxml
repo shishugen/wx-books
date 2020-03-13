@@ -21,7 +21,7 @@
 </view>
 </view>
 
-<view class="mian" style="margin-top:35px">
+<view class="mian" style="margin-top:35px" bindlongpress="personNumber">
    <view class="section" wx:for="{{user_list}}">
        <view class="section__title1"> {{item.username}}</view>
        <view class="section__title" >支出 : {{item.money}}</view>

@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: row;
 }
+
+
 .head_item {
   width: 374rpx;
   text-align: center;

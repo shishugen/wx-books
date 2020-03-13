@@ -12,6 +12,9 @@ Page({
     is_update:'',
     date_date : '',
     page : 10 ,
+    openid : '',
+    moneysrotflag :true,
+    datesrotflag: true,
   },
 
   /**
@@ -24,26 +27,72 @@ Page({
       name: 'login',
       complete: re => {
         var id = re.result.openid
+        th.setData({
+          openid : id
+        })
         const db = wx.cloud.database();
-        const books_list =  db.collection("books_list");
-        books_list.where({
+
+        db.collection('books_list').where({
           _openid: id,
           date: {								//columnName表示欲模糊查询数据所在列的名
             $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
-            $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
+            // $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
           }
-        }).orderBy("_id","asc").limit(th.data.page).get({
-          success: function (res) {
-            // res.data 是包含以上定义的两条记录的数组
-            th.setData({
-              list: res.data
-            })
-          //  console.log(th.data.page)
-            if (th.data.page == 10){
-              th.get_money_total(id);
+        }).count().then(res => {
+        var  books_list_total = res.total
+          console.log(books_list_total)
+        var x = 0
+        var arraypro = []          // 定义空数据 用来存储之后的数据
+          th.get_money_total()
+        const batchTimes = Math.ceil(books_list_total / 20)
+        for (let i = 0; i < batchTimes; i++) {
+          console.log(i)
+          x++
+          db.collection("books_list").where({
+            _openid: id,
+            date: {								//columnName表示欲模糊查询数据所在列的名
+              $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+              // $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
             }
-          }
+          }).skip(i * 20).get().then(res => {
+            const list = res.data
+            console.log("查询成功", i * (20), res);
+            for (let j = 0; j < list.length; j++) {
+              arraypro.push(list[j])
+            }
+            if (batchTimes == x) {
+              this.setData({
+                list: arraypro
+              })
+            }
+            console.log("查询arraypro", arraypro);
+          }).catch(ree => {
+            console.log("查询错误", ree);
+          })
+        }
         })
+        
+
+
+
+        // books_list.where({
+        //   _openid: id,
+        //   date: {								//columnName表示欲模糊查询数据所在列的名
+        //     $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+        //     $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
+        //   }
+        // }).orderBy("_id","asc").limit(th.data.page).get({
+        //   success: function (res) {
+        //     // res.data 是包含以上定义的两条记录的数组
+        //     th.setData({
+        //       list: res.data
+        //     })
+        //   //  console.log(th.data.page)
+        //     if (th.data.page == 10){
+        //       th.get_money_total(id);
+        //     }
+        //   }
+        // })
       
       }
     })
@@ -77,43 +126,73 @@ Page({
   },
 
   //计算总金额
-  get_money_total: function (id) {
-    const th = this;
+  get_money_total: function () {
     const db = wx.cloud.database();
-    const books_list = db.collection("books_list");
-    books_list.where({
-      _openid: id,
-      date: {								//columnName表示欲模糊查询数据所在列的名
-        $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
-        $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
-      }
-    }).get({
-      success: function (res) {
-
-        for (var i = 0; i < res.data.length; i++) {
-          th.data.total += parseFloat(res.data[i].money)
-        }
-        th.setData({
-          total: th.data.total.toFixed(2)
-        })
-      }
+    const th = this;
+    th.setData({
+      total: 0
     })
+    const $ = db.command.aggregate
+    db.collection("books_list").aggregate()
+      .match({
+        date: {								//columnName表示欲模糊查询数据所在列的名
+          $regex: th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+          // $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
+        }
+      }).group({
+        _id: "$_openid",
+        money: $.sum("$money"),
+      }).end().then(res => {
+        const list = res.list;
+        var money_total = 0;
+
+        for (var i = 0; i < list.length; i++) {
+          money_total += list[i].money
+          console.log(list[i]._id, th.data.openid)
+          if (th.data.openid == list[i]._id) {
+            th.setData({
+              total: list[i].money.toFixed(2)
+            })
+            return;
+          }
+        }
+      })
+
+
+    // const books_list = db.collection("books_list");
+    // books_list.where({
+    //   _openid: id,
+    //   date: {								//columnName表示欲模糊查询数据所在列的名
+    //     $regex: '.*' + th.data.date + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+    //     $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
+    //   }
+    // }).get({
+    //   success: function (res) {
+
+    //     for (var i = 0; i < res.data.length; i++) {
+    //       th.data.total += parseFloat(res.data[i].money)
+    //     }
+    //     th.setData({
+    //       total: th.data.total.toFixed(2)
+    //     })
+    //   }
+    // })
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom : function () {
-    console.log("eee")
-    const p = this.data.page + 8 ; 
-    this.setData({
-      page: p
-    })
-    this.onLoad()
+  // onReachBottom : function () {
+  //   console.log("eee")
+  //   const p = this.data.page + 8 ; 
+  //   this.setData({
+  //     page: p
+  //   })
+  //   this.onLoad()
    
 
-  },
+  // },
 
 
   /**
@@ -198,8 +277,60 @@ Page({
     });
     console.log(model)
   },
+  /**
+   * 
+   */
+  moneysrot: function () {
+    var list = this.data.list;
+    console.log(this.data.moneysrotflag)
+    if (this.data.moneysrotflag) {
+      this.setData({
+        moneysrotflag: false,
+      })
+      list.sort(function (a, b) {
+        return a.money - b.money;
+      })
+    } else {
+      this.setData({
+        moneysrotflag: true,
+      })
+      list.sort(function (a, b) {
+        return b.money - a.money;
+      })
+    }
 
+    this.setData({
+      list: list,
+    })
+    console.log(this.data.moneysrotflag)
+    console.log(list)
+  },
 
+  datesrot: function () {
+    var list = this.data.list;
+    const da = list[0].date.substring(8, 13)
+    if (this.data.datesrotflag) {
+      this.setData({
+        datesrotflag: false,
+      })
+      list.sort(function (a, b) {
+        return a.date.substring(8, 13) - b.date.substring(8, 13);
+      })
+    } else {
+      this.setData({
+        datesrotflag: true,
+      })
+      list.sort(function (a, b) {
+        return b.date.substring(8, 13) - a.date.substring(8, 13);
+      })
+    }
+
+    this.setData({
+      list: list,
+    })
+    console.log(this.data.datesrotflag)
+    console.log(list)
+  },
   /**
    * 生命周期函数--监听页面卸载
    */

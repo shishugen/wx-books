@@ -1,8 +1,8 @@
 
 <view class="head">
-  <view class="head_item">商品</view>
+  <view class="head_item" bindtap="datesrot">商品</view>
    <view class="ring"></view>
-     <view class="head_item2">金额</view>
+     <view class="head_item2" bindtap="moneysrot">金额</view>
 </view>
 
 

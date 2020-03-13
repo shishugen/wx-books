@@ -126,8 +126,7 @@ Page({
       .match({
         date: {								//columnName表示欲模糊查询数据所在列的名
           $regex: ym + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
-         // $options: 'i'							//$options:'1' 代表这个like的条件不区分大小写,详见开发文档
-        }
+          }
       }).group({
         _id: "$create_by",
         money: $.sum("$money"),
@@ -135,21 +134,46 @@ Page({
         const data = res.list
         var money_total = 0
         var new_list = []
+        var a = []
         for (var i = 0; i < data.length; i++) {
           money_total += parseFloat(parseFloat(data[i].money).toFixed(2))
         }
-        
         for (var i = 0; i < data.length; i++){
           const m1 = parseFloat(parseFloat(data[i].money).toFixed(2))
           const m = m1 - (money_total / data.length) 
           const m2 = parseFloat(m).toFixed(2)
+          a.push(data[i]._id)
           new_list.push({ "username": data[i]._id, "money": m1, "money_total":m2})
         }
         console.log(new_list)
-        th.setData({
-          user_list : new_list ,
-          money_total: money_total
+
+       //查询用户
+        db.collection("wx_user").where({
+          stauts : 0
+        }).get().then(res=>{
+         let ta = res.data;
+          console.log(ta)
+         var b = []
+         for(var i = 0 ; i < ta.length; i ++){
+           b.push(ta[i].name)
+         }
+          let diff = b.filter(function (val) { return a.indexOf(val) === -1 })
+         
+          console.log(b, a, diff)
+          for(var j = 0 ; j < diff.length ; j++){
+            new_list.push({ "username": diff[j], "money": 0, "money_total": 0 })
+          }
+          console.log(new_list)
+          th.setData({
+            user_list: new_list,
+            money_total: money_total
+          })
+        }).catch(err=>{
+          console.error(err)
         })
+
+
+      
 
       })
 
@@ -158,10 +182,9 @@ Page({
 
     bindGetUserInfo: function (e) {
       console.log(e.detail.userInfo)
-  
   },
   onPullDownRefresh() {
- 
+
     this.onLoad()
     // complete
     wx.hideNavigationBarLoading() //完成停止加载
@@ -169,6 +192,10 @@ Page({
 
 
   },
+
+
+
+
 
   onGetUserInfo: function(e) {
     if (!this.data.logged && e.detail.userInfo) {

@@ -1,7 +1,7 @@
 
 
 <view class="find_list">
-<view class="section">
+<view class="section" >
   <view class="section_create_title">用户 : </view>
   <picker bindchange="bindPickerChange" name="create" id="{{create_by[create_index]._openid}}" value="{{create_by[create_index].create_index}}" data-datetest="{{create_by[create_index]._openid}}"   range="{{create_by}}" range-key="{{'name'}}">
     <view class="picker">
@@ -22,14 +22,14 @@
 
 
 
-<view class="head">
-  <view class="head_item">商品</view>
+
+<view class="head" >
+  <view class="head_item" bindtap="datesrot">商品</view>
 
   <view class="head_item">类型</view>
    <view class="ring"></view>
   <view class="head_item">创建者</view>
-
-    <view class="head_item">金额</view>
+  <view class="head_item" bindtap="moneysrot">金额</view>
 </view>
 
 

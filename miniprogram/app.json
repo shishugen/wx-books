@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/books/list/list",
     "pages/index/index",
-    "pages/login/login",
+    "pages/books/list/list",
     "pages/books/myList/myList",
+    "pages/login/login",
     "pages/books/reports/reports",
     "pages/books/add/add",
     "pages/books/test/test",
@@ -16,7 +16,8 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "账单管理",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "onReachBottomDistance": 50
   },
   "tabBar": {
     "list": [
