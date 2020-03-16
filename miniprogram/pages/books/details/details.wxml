@@ -21,7 +21,7 @@
                     <view class="weui-label">日期</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="date" value="{{date}}" name="date" start="{{start_date}}" end="{{end_date}}" bindchange="bindDateChange">
+                    <picker mode="date" value="{{date}}" disabled name="date" start="{{start_date}}" end="{{end_date}}" bindchange="bindDateChange">
                         <view class="weui-input">{{date}}</view>
                     </picker>
                 </view>
@@ -45,7 +45,7 @@
                     <view class="weui-label">金额</view>
                 </view>
                 <view class="weui-cell__bd" >
-                    	<input class="weui-input" type="digit" value="{{money}}" name="money" confirm-type="done"  maxlength="8" placeholder="请填写金额" placeholder-class="weui-input__placeholder"  />
+                    	<input class="weui-input" type="digit" disabled value="{{money}}" name="money" confirm-type="done"  maxlength="8" placeholder="请填写金额" placeholder-class="weui-input__placeholder"  />
                 </view>
             </view>
 
@@ -56,7 +56,7 @@
 				<view class="weui-cells weui-cells_form">
 					<view class="weui-cell ">
 						<view class="weui-cell__bd">
-							<textarea class="weui-textarea" name="goods"value="{{goods}}" bindinput="bindInputGoods" placeholder="请描述你所发生的事情" show-confirm-bar="true" maxlength="200" rows="3"></textarea>
+							<textarea class="weui-textarea" disabled name="goods"value="{{goods}}" bindinput="bindInputGoods" placeholder="请描述你所发生的事情" show-confirm-bar="true" maxlength="200" rows="3"></textarea>
 							<view class="weui-textarea-counter" ><text>{{goods.length}}</text>/200</view>
 						</view>
 					</view>

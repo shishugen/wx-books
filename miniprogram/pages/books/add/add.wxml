@@ -129,5 +129,6 @@
 
   <view class="btn-area" > 
     <button class="submit_button"  formType="submit">提交</button>
+     <!-- <button class="submit_button" bindtap="backList" wx:if="{{backListFlag}}" >返回</button> -->
   </view>
   </form>

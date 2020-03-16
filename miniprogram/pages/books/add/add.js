@@ -21,12 +21,14 @@ Page({
     update_id : '',
     goods_length:0,
     arr_index : 0,
+
     items: [
       { name: 'album', value: '相册', checked: 'true'},
       { name: 'camera', value: '相机' , },
     ]   ,
     buttons: [{ text: '取消' }, { text: '确定' }],
     dialogShow: false,
+    backListFlag : false,
   },
   formSubmit: function (e) {
      const th = this;
@@ -165,7 +167,14 @@ Page({
       type_index : e.detail.value
     })
   },
+  backList: function () {
+    wx.navigateBack({
+      url: "/pages/books/list/list"
+    });
 
+
+
+  },
 
   formReset: function () {
     var timestamp = Date.parse(new Date());
@@ -199,7 +208,7 @@ Page({
     const db = wx.cloud.database();
     if (options.book != "undefined" && options.book != undefined ){
       var book = JSON.parse(options.book);
-
+       
       this.setData({
         date: book.date,
         goods: book.goods,
@@ -208,6 +217,7 @@ Page({
         isUpdate : true,
         update_id: book._id,
         goods_length: book.goods.length,
+        backListFlag : true,
       })
       arr = book.images
     }
