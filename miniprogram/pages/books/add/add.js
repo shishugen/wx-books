@@ -187,7 +187,11 @@ Page({
       date: e.detail.value
     })
   },
-
+  bindInputGoods:function(e){
+   this.setData({
+     goods_length: e.detail.cursor
+   })
+  },
 
   onLoad: function (options) {
     arr = []
