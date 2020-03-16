@@ -14,6 +14,8 @@ Page({
     my_books_image : '',
     user_list:[],
     money_total:0,
+    month : 0 ,
+    monthFlag: true,  //判断是加一个月还是减一个月
   },
 
 
@@ -175,14 +177,17 @@ Page({
           for(var j = 0 ; j < diff.length ; j++){
             new_list.push({ "username": diff[j], "money": 0, "money_total": -parseFloat(money_total / usertotal).toFixed(2)})
           }
+
           console.log(new_list)
           th.setData({
             user_list: new_list,
-            money_total: money_total
+            money_total: money_total ,
+            month: date.getMonth() + 1,
           })
         }).catch(err=>{
           console.error(err)
         })
+
 
       })
       
@@ -195,7 +200,132 @@ Page({
     bindGetUserInfo: function (e) {
       console.log(e.detail.userInfo)
   },
-  onPullDownRefresh() {
+
+  loadData:function(e){
+
+    console.log(e)
+    let month = e.currentTarget.dataset.month
+    const db = wx.cloud.database();
+    const th = this
+    var timestamp = Date.parse(new Date());
+    var date = new Date(timestamp);
+    //年  
+    var Y = date.getFullYear();
+    //月  
+    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+   
+    var usertotal = 0
+    var ym ='';
+
+    if (th.data.monthFlag){
+        if (month != '01') {
+          month = month - 1
+          th.setData({
+            month: month,
+            monthFlag: false
+          })
+
+          ym = Y + '-' + (month < 10 ? '0' + month : month);
+          console.log(ym)
+        } else {
+          Y = Y - 1
+          ym = Y + '-12';
+          month = month - 1
+          th.setData({
+            month: 12,
+            monthFlag :false
+          })
+        }
+    }else{
+      if (month != '12') {
+        month = month + 1
+        th.setData({
+          month: month,
+          monthFlag: true
+        })
+        ym = Y + '-' + (month < 10 ? '0' + month : month);
+        console.log(ym)
+      } else {
+        Y = Y - 1
+        ym = Y + '-01';
+        month = month + 1
+        th.setData({
+          month: '01',
+          monthFlag: true
+        })
+      }
+    }
+
+   
+   console.log(ym)
+    //查询用户数据
+    const $ = db.command.aggregate
+    db.collection('wx_user').where({
+      stauts: 0
+    }).count().then(res => {
+      usertotal = res.total
+
+      db.collection("books_list").aggregate()
+        .match({
+          date: {								//columnName表示欲模糊查询数据所在列的名
+            $regex: ym + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+          }
+        }).group({
+          _id: "$create_by",
+          money: $.sum("$money"),
+        }).end().then(res => {
+          const data = res.list
+          var money_total = 0
+          var new_list = []
+          var a = []
+          for (var i = 0; i < data.length; i++) {
+            money_total += parseFloat(parseFloat(data[i].money).toFixed(2))
+          }
+
+          for (var i = 0; i < data.length; i++) {
+            const m1 = parseFloat(parseFloat(data[i].money).toFixed(2))
+            const m = m1 - (money_total / usertotal)
+            const m2 = parseFloat(m).toFixed(2)
+            a.push(data[i]._id)
+            new_list.push({ "username": data[i]._id, "money": m1, "money_total": m2 })
+          }
+
+          console.log(new_list)
+
+          //查询用户
+          db.collection("wx_user").where({
+            stauts: 0
+          }).get().then(res => {
+            let ta = res.data;
+            console.log(ta)
+            var b = []
+            for (var i = 0; i < ta.length; i++) {
+              b.push(ta[i].name)
+            }
+            let diff = b.filter(function (val) { return a.indexOf(val) === -1 })
+
+            console.log(b, a, diff)
+            for (var j = 0; j < diff.length; j++) {
+              new_list.push({ "username": diff[j], "money": 0, "money_total": -parseFloat(money_total / usertotal).toFixed(2) })
+            }
+       
+            th.setData({
+              user_list: new_list,
+              money_total: money_total
+            })
+          }).catch(err => {
+            console.error(err)
+          })
+
+
+        })
+
+
+    })
+
+  },
+
+  onPullDownRefresh : function() {
 
     this.onLoad()
     // complete

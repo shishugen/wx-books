@@ -21,18 +21,19 @@
 </view>
 </view>
 
-
-  <view class="mian" style="margin-top:35px" bindlongpress="personNumber">
-    <view class="section" wx:for="{{user_list}}">
+<swiper class="swiper-data" bindanimationfinish="loadData" data-month="{{month}}" >
+<swiper-item>
+  <view class="mian" style="margin-top:35px"  bindlongpress="personNumber">
+    <view class="section" wx:for="{{user_list}}" wx:key="*this">
         <view class="section__title1"> {{item.username}}</view>
         <view class="section__title" >支出 : {{item.money}}</view>
         <view class="section__title" style=" color: red;" wx:if="{{item.money_total <= 0}}">收入 : {{item.money_total}}</view>
         <view class="section__title" wx:else>收入 : {{item.money_total}}</view>
-
     </view>
-      <view  class="money_total">总支出 ：{{money_total}}</view>
+      <view  class="money_total">{{month}}月 总支出 ：{{money_total}}</view>
   </view>
-
+</swiper-item>
+</swiper>
 <!-- <view class="out">
    <image src="{{add_books_image}}" style="height:100px" bindtap="reports" mode="widthFix"></image>
    <view class="txt">账单报表</view>

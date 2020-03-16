@@ -80,5 +80,11 @@ page {
   text-align: center;
   background:#fff;
   margin-left: 200rpx;
-  width: 40%;
+  width: 43%;
+}
+
+.swiper-data{
+  height: 400rpx;
+  margin-top: 50rpx;
+  
 }
