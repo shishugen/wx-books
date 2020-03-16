@@ -23,7 +23,7 @@
 
 <swiper class="swiper-data" bindanimationfinish="loadData" data-month="{{month}}" >
 <swiper-item>
-  <view class="mian" style="margin-top:35px"  bindlongpress="personNumber">
+  <view class="mian" style="margin-top:35px"  bindlongpress="personNumber" data-month="{{month}}"  >
     <view class="section" wx:for="{{user_list}}" wx:key="*this">
         <view class="section__title1"> {{item.username}}</view>
         <view class="section__title" >支出 : {{item.money}}</view>

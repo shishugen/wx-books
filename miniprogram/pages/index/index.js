@@ -121,16 +121,16 @@ Page({
     //月  
     var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
     const ym = Y+'-'+M;
-    var usertotal = 0
+   // var usertotal = 0
     console.log(ym)
    //查询用户数据
     const $ = db.command.aggregate
 
   
-    db.collection('wx_user').where({
-      stauts: 0
-    }).count().then(res => {
-      usertotal = res.total
+    // db.collection('wx_user').where({
+    //   stauts: 0
+    // }).count().then(res => {
+    //   usertotal = res.total
     
 
 
@@ -153,54 +153,155 @@ Page({
 
         for (var i = 0; i < data.length; i++){
           const m1 = parseFloat(parseFloat(data[i].money).toFixed(2))
-          const m = m1 - (money_total / usertotal) 
+          const m = m1 - (money_total / data.length) 
           const m2 = parseFloat(m).toFixed(2)
           a.push(data[i]._id)
           new_list.push({ "username": data[i]._id, "money": m1, "money_total":m2})
         }
-        
-        console.log(new_list)
-
-       //查询用户
-        db.collection("wx_user").where({
-          stauts : 0
-        }).get().then(res=>{
-         let ta = res.data;
-          console.log(ta)
-         var b = []
-         for(var i = 0 ; i < ta.length; i ++){
-           b.push(ta[i].name)
-         }
-          let diff = b.filter(function (val) { return a.indexOf(val) === -1 })
-         
-          console.log(b, a, diff)
-          for(var j = 0 ; j < diff.length ; j++){
-            new_list.push({ "username": diff[j], "money": 0, "money_total": -parseFloat(money_total / usertotal).toFixed(2)})
-          }
-
-          console.log(new_list)
+                    
           th.setData({
             user_list: new_list,
             money_total: money_total ,
             month: date.getMonth() + 1,
           })
-        }).catch(err=>{
-          console.error(err)
-        })
-
-
+    
       })
       
-
-      })
-
-
    },
 
     bindGetUserInfo: function (e) {
       console.log(e.detail.userInfo)
   },
+  personNumber:function(e){
+    const db = wx.cloud.database();
+    const $ = db.command.aggregate
+    const  th = this
+    let month = e.currentTarget.dataset.month
+    var timestamp = Date.parse(new Date());
+    var date = new Date(timestamp);
+    //年  
+    var Y = date.getFullYear();
+    //月  
+    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
 
+    let ym = Y + '-' + (month < 10 ? '0' + month : month);
+ 
+    console.log(e)
+    wx.showModal({
+      title: '提示',
+      content: '筛选未购买商品的人',
+      confirmText:'筛选',
+      cancelText:'不筛选',
+      success(res) {
+        if (res.confirm) {
+            db.collection("books_list").aggregate()
+              .match({
+                date: {								//columnName表示欲模糊查询数据所在列的名
+                  $regex: ym + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+                }
+              }).group({
+                _id: "$create_by",
+                money: $.sum("$money"),
+              }).end().then(res => {
+                const data = res.list
+                var money_total = 0
+                var new_list = []
+                var a = []
+                for (var i = 0; i < data.length; i++) {
+                  money_total += parseFloat(parseFloat(data[i].money).toFixed(2))
+                }
+                for (var i = 0; i < data.length; i++) {
+                  const m1 = parseFloat(parseFloat(data[i].money).toFixed(2))
+                  const m = m1 - (money_total / data.length)
+                  const m2 = parseFloat(m).toFixed(2)
+                  a.push(data[i]._id)
+                  new_list.push({ "username": data[i]._id, "money": m1, "money_total": m2 })
+                }
+                  th.setData({
+                    user_list: new_list,
+                    money_total: money_total
+                  })
+
+              })
+          console.log('用户点击确定')
+        } else if (res.cancel) {
+
+          
+
+          let usertotal = 0
+          //查询用户数据
+          const $ = db.command.aggregate
+          db.collection('wx_user').where({
+            stauts: 0
+          }).count().then(res => {
+            usertotal = res.total
+
+            db.collection("books_list").aggregate()
+              .match({
+                date: {								//columnName表示欲模糊查询数据所在列的名
+                  $regex: ym + '.*',		//表示欲查询的内容，‘.*’等同于SQL中的‘%’
+                }
+              }).group({
+                _id: "$create_by",
+                money: $.sum("$money"),
+              }).end().then(res => {
+                const data = res.list
+                var money_total = 0
+                var new_list = []
+                var a = []
+                for (var i = 0; i < data.length; i++) {
+                  money_total += parseFloat(parseFloat(data[i].money).toFixed(2))
+                }
+
+                for (var i = 0; i < data.length; i++) {
+                  const m1 = parseFloat(parseFloat(data[i].money).toFixed(2))
+                  const m = m1 - (money_total / usertotal)
+                  const m2 = parseFloat(m).toFixed(2)
+                  a.push(data[i]._id)
+                  new_list.push({ "username": data[i]._id, "money": m1, "money_total": m2 })
+                }
+
+                console.log(new_list)
+
+                //查询用户
+                db.collection("wx_user").where({
+                  stauts: 0
+                }).get().then(res => {
+                  let ta = res.data;
+                  console.log(ta)
+                  var b = []
+                  for (var i = 0; i < ta.length; i++) {
+                    b.push(ta[i].name)
+                  }
+                  let diff = b.filter(function (val) { return a.indexOf(val) === -1 })
+
+                  console.log(b, a, diff)
+                  for (var j = 0; j < diff.length; j++) {
+                    new_list.push({ "username": diff[j], "money": 0, "money_total": -parseFloat(money_total / usertotal).toFixed(2) })
+                  }
+
+                  th.setData({
+                    user_list: new_list,
+                    money_total: money_total
+                  })
+                }).catch(err => {
+                  console.error(err)
+                })
+
+
+              })
+
+
+          })
+
+
+          console.log('用户点击取消')
+        }
+      }
+    })
+   
+    
+  },
   loadData:function(e){
 
     console.log(e)
@@ -260,11 +361,6 @@ Page({
    console.log(ym)
     //查询用户数据
     const $ = db.command.aggregate
-    db.collection('wx_user').where({
-      stauts: 0
-    }).count().then(res => {
-      usertotal = res.total
-
       db.collection("books_list").aggregate()
         .match({
           date: {								//columnName表示欲模糊查询数据所在列的名
@@ -284,44 +380,19 @@ Page({
 
           for (var i = 0; i < data.length; i++) {
             const m1 = parseFloat(parseFloat(data[i].money).toFixed(2))
-            const m = m1 - (money_total / usertotal)
+            const m = m1 - (money_total / data.length)
             const m2 = parseFloat(m).toFixed(2)
             a.push(data[i]._id)
             new_list.push({ "username": data[i]._id, "money": m1, "money_total": m2 })
           }
 
           console.log(new_list)
-
-          //查询用户
-          db.collection("wx_user").where({
-            stauts: 0
-          }).get().then(res => {
-            let ta = res.data;
-            console.log(ta)
-            var b = []
-            for (var i = 0; i < ta.length; i++) {
-              b.push(ta[i].name)
-            }
-            let diff = b.filter(function (val) { return a.indexOf(val) === -1 })
-
-            console.log(b, a, diff)
-            for (var j = 0; j < diff.length; j++) {
-              new_list.push({ "username": diff[j], "money": 0, "money_total": -parseFloat(money_total / usertotal).toFixed(2) })
-            }
-       
-            th.setData({
-              user_list: new_list,
-              money_total: money_total
-            })
-          }).catch(err => {
-            console.error(err)
+          th.setData({
+            user_list: new_list,
+            money_total: money_total
           })
-
-
+    
         })
-
-
-    })
 
   },
 
