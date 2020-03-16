@@ -56,11 +56,14 @@ Page({
             }
           }).skip(i * 20).get().then(res => {
             const list = res.data
-            console.log("查询成功", i * (20), res);
+           // console.log("查询成功", i * (20), res);
             for (let j = 0; j < list.length; j++) {
               arraypro.push(list[j])
             }
             if (batchTimes == x) {
+              arraypro.sort(function (a, b) {
+                return b.date.substring(8, 13) - a.date.substring(8, 13);
+              })
               this.setData({
                 list: arraypro
               })

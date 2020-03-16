@@ -74,6 +74,9 @@ Page({
            arraypro.push(list[j])
         }
         if (batchTimes == x) {
+          arraypro.sort(function (a, b) {
+            return b.date.substring(8, 13) - a.date.substring(8, 13);
+          })
           this.setData({
             list: arraypro
           })
