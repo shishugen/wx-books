@@ -119,9 +119,19 @@ Page({
     //月  
     var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
     const ym = Y+'-'+M;
+    var usertotal = 0
     console.log(ym)
    //查询用户数据
     const $ = db.command.aggregate
+
+  
+    db.collection('wx_user').where({
+      stauts: 0
+    }).count().then(res => {
+      usertotal = res.total
+    
+
+
     db.collection("books_list").aggregate()
       .match({
         date: {								//columnName表示欲模糊查询数据所在列的名
@@ -138,13 +148,15 @@ Page({
         for (var i = 0; i < data.length; i++) {
           money_total += parseFloat(parseFloat(data[i].money).toFixed(2))
         }
+
         for (var i = 0; i < data.length; i++){
           const m1 = parseFloat(parseFloat(data[i].money).toFixed(2))
-          const m = m1 - (money_total / data.length) 
+          const m = m1 - (money_total / usertotal) 
           const m2 = parseFloat(m).toFixed(2)
           a.push(data[i]._id)
           new_list.push({ "username": data[i]._id, "money": m1, "money_total":m2})
         }
+        
         console.log(new_list)
 
        //查询用户
@@ -161,7 +173,7 @@ Page({
          
           console.log(b, a, diff)
           for(var j = 0 ; j < diff.length ; j++){
-            new_list.push({ "username": diff[j], "money": 0, "money_total": 0 })
+            new_list.push({ "username": diff[j], "money": 0, "money_total": -parseFloat(money_total / usertotal).toFixed(2)})
           }
           console.log(new_list)
           th.setData({
@@ -172,7 +184,7 @@ Page({
           console.error(err)
         })
 
-
+      })
       
 
       })

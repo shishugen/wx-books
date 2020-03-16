@@ -248,14 +248,18 @@ Page({
             },
             complete: re1 => {
               const arr1 = re1.result
-              
+              console.log("re1", arr1)
               var min;
+              var mo;
               for (var i = 0; i < arr1.length; i++) {
                 for (var j = i; j < arr1.length; j++) {
                   if (arr1[i]._id > arr1[j]._id) {
                     min = arr1[j]._id;
+                    mo = arr1[j].money;
                     arr1[j]._id = arr1[i]._id;
+                    arr1[j].money = arr1[i].money;
                     arr1[i]._id = min;
+                    arr1[i].money = mo;
                   }
                 }
               }
@@ -267,7 +271,7 @@ Page({
                 categoriesMonth.push(arr1[j]._id)
               }
 
-              console.log("re1", arr1)
+              console.log("re2", arr1)
               data_arr.push({
                 title: sort_yaer[q]._id +"年",
                 data: arrmonth,
