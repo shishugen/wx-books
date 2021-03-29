@@ -20,7 +20,7 @@ exports.main = async (event, context) => {
   tableMap.cols[0]={caption: tableHead[0], type: 'string'}
   tableMap.cols[1] = { caption: tableHead[1], type: 'string' }
   tableMap.cols[2] = { caption: tableHead[2], type: 'string' }
-  tableMap.cols[3] = { caption: tableHead[3], type: 'number' }
+  tableMap.cols[3] = { caption: tableHead[3], type: 'string' }
   tableMap.cols[4] = { caption: tableHead[4], type: 'string' }
   // for (var i = 0; i < tableHead.length; i++) {
 
