@@ -1,7 +1,8 @@
 
 <swiper class="banner" indicator-dots indicator-color="rgba(255, 255, 255, 0.6)" indicator-active-color="#fff" autoplay current="1" circular previous-margin="15px" next-margin="15px" wx:if="{{headImagesStatus == 0}}" >
    <swiper-item wx:for="{{headImages}}" wx:key="*this">
-       <image  src="{{item.url}}"></image>
+              <image  src="{{item.url}}"  data-src='{{item}}' data-list='{{headImages}}' bindtap="previewImage"></image>
+
    </swiper-item>
 </swiper>
 
