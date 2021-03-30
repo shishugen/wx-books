@@ -402,24 +402,32 @@ Page({
 
                       var result = 0;
                       for (var i = 0; i < list.length; i++) {
-                         result += list[i].money;
+                    
+                         if(list[i].money != null && list[i].money > 0){
+                          result +=  list[i].money;
+                         // list[i].money = list[i].money+"";
+                          console.log("list==="+list[i].money)
+                         }
+                       
                       }
                       const obj_total ={}
 
                       obj_total.goods = ''
                       obj_total.type = ''
                       obj_total.date = '总金额'
+                      obj_total.money = result
                       obj_total.create_by = ''
-                      obj_total.money = result;
+                     
 
                       list.push(obj_total)
 
-                      console.log(list)
-                      console.log(obj_total)
+                      //console.log(list.money)
+                      console.log("monet==="+obj_total.money)
+                    
                       wx.cloud.callFunction({
                         name: 'excel',
                         data: {
-                          excelhead: ["商品", "类型", "日期", "金额", "创建者"],
+                          excelhead: ["类型", "日期", "金额", "创建者","商品"],
                           excelbody: list
                         },
                         success: function (res) {
