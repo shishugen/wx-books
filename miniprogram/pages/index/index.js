@@ -514,6 +514,18 @@ Page({
       }
     })
   },
+    previewImage:function(e){   
+    var current=e.target.dataset.src.url;
+     var arr =[];
+   imgList.forEach(a => {
+    arr.push(a.url)
+    });
+//图片预览
+wx.previewImage({
+  current: current, // 当前显示图片的http链接
+  urls: arr // 需要预览的图片http链接列表
+})
+},
 
   // 上传图片
   doUpload: function () {
