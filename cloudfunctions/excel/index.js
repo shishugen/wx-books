@@ -17,11 +17,16 @@ exports.main = async (event, context) => {
     rows: [],
   }
   //添加表头
-  tableMap.cols[0]={caption: tableHead[0], type: 'string'}
-  tableMap.cols[1] = { caption: tableHead[1], type: 'string' }
-  tableMap.cols[2] = { caption: tableHead[2], type: 'string' }
-  tableMap.cols[3] = { caption: tableHead[3], type: 'string' }
-  tableMap.cols[4] = { caption: tableHead[4], type: 'string' }
+  tableMap.cols[0]={caption: tableHead[0], type: 'string',width:15,fill: {
+    fgColor: {
+      rgb: 'FF000000'
+    }
+  }}
+  tableMap.cols[1] = { caption: tableHead[1], type: 'string', width:12}
+  tableMap.cols[2] = { caption: tableHead[2], type: 'string', width:12}
+  tableMap.cols[3] = { caption: tableHead[3], type: 'string', width:12}
+  tableMap.cols[4] = { caption: tableHead[4], type: 'string' ,width:100 }
+ 
   // for (var i = 0; i < tableHead.length; i++) {
 
   //   tableMap.cols[tableMap.cols.length] = {
@@ -38,11 +43,11 @@ exports.main = async (event, context) => {
   //添加每一行数据
   for (var i = 0; i < data_list.length; i++) {
     tableMap.rows[tableMap.rows.length] = [
-      data_list[i].goods,
       data_list[i].type, 
       data_list[i].date, 
       data_list[i].money,
-      data_list[i].create_by
+      data_list[i].create_by,
+      data_list[i].goods
     ]
   }
   //保存excelResult到相应位置
